@@ -14,6 +14,7 @@ import {
   type Opcion,
   type RespuestaAuditoria,
 } from "@/lib/auditoria";
+import type { Vendedor } from "@/lib/db";
 import { cn } from "@/lib/utils";
 
 type Seccion = 1 | 2 | 3 | 4 | 5;
@@ -62,7 +63,7 @@ const VACIO: RespuestaAuditoria = {
   p13: "",
 };
 
-export function AuditoriaForm({ ejecutivos }: { ejecutivos: string[] }) {
+export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
   const [r, setR] = useState<RespuestaAuditoria>(VACIO);
   const [seccion, setSeccion] = useState<Seccion>(1);
   const [errores, setErrores] = useState<Partial<Record<Campo, string>>>({});
@@ -245,9 +246,9 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: string[] }) {
                   <option value="" disabled>
                     Seleccione una opción
                   </option>
-                  {ejecutivos.map((nombre) => (
-                    <option key={nombre} value={nombre}>
-                      {nombre}
+                  {ejecutivos.map((v) => (
+                    <option key={v.nombre} value={v.nombre}>
+                      {v.etiqueta}
                     </option>
                   ))}
                   <option value={NO_ESTOY_SEGURO}>{NO_ESTOY_SEGURO}</option>

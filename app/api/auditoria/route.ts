@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
   const ejecutivo = body.ejecutivo;
   if (
     ejecutivo !== NO_ESTOY_SEGURO &&
-    !(await listarVendedoresActivos()).includes(ejecutivo ?? "")
+    !(await listarVendedoresActivos()).some((v) => v.nombre === ejecutivo)
   ) {
     return error("Seleccione un ejecutivo de ventas válido.");
   }
