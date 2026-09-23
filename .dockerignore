@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.gitignore
+.claude
+
+# Nunca dentro de la imagen: los secretos se inyectan en ejecución.
+.env
+.env*.local
+
+.DS_Store
+*.log
+tsconfig.tsbuildinfo

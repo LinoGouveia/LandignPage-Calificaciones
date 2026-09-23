@@ -1,0 +1,536 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Sistema visual "Portal Supricom": copiado tal cual del panel administrativo
+   (Documents/Dashboard, app/globals.css, bloque .portal-supricom) para que
+   esta encuesta se sienta parte del mismo sitio público que ya usan para
+   Servicio Técnico. No se modifican los tokens/clases originales; las
+   piezas nuevas que necesita esta encuesta (estrellas, tarjetas de
+   calificación) van al final bajo el prefijo .rf- (rating form).
+   --------------------------------------------------------------------------- */
+.portal-supricom {
+  --portal-primary: #741dfe;
+  --portal-primary-hover: #5c11d4;
+  --portal-primary-soft: #f3ecff;
+  --portal-ink: #10101a;
+  --portal-muted: #5c5c70;
+  --portal-line: rgba(0, 0, 0, 0.1);
+  --portal-line-strong: rgba(0, 0, 0, 0.15);
+  --portal-surface: #ffffff;
+  --portal-surface-soft: #f7f6fb;
+  --portal-radius: 10px;
+  --portal-field-height: 42px;
+
+  font-family: var(--font-manrope), Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--portal-ink);
+  background-color: var(--portal-surface);
+}
+
+.portal-supricom h1,
+.portal-supricom h2,
+.portal-supricom h3,
+.portal-supricom .portal-display {
+  font-family: var(--font-syne), Arial, Helvetica, sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.portal-topbar {
+  background-image: url("https://supricom.com.ve/wp-content/uploads/2025/06/fondo-de-papel-tapiz-colorido-borroso-vivo-scaled.webp");
+  background-size: cover;
+  background-position: center;
+}
+
+.portal-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  padding: 0 1.5rem;
+  border-radius: var(--portal-radius);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.portal-btn-primary {
+  background-color: var(--portal-primary);
+  color: #ffffff;
+}
+.portal-btn-primary:hover {
+  background-color: var(--portal-primary-hover);
+}
+
+.portal-btn-outline {
+  border: 1px solid var(--portal-primary);
+  color: var(--portal-primary);
+  background-color: transparent;
+}
+.portal-btn-outline:hover {
+  background-color: var(--portal-primary-soft);
+}
+
+.portal-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--portal-line);
+  border-radius: var(--portal-radius);
+  background-color: var(--portal-surface);
+  padding: 1.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+.portal-card:hover {
+  border-color: var(--portal-primary);
+  box-shadow: 0 12px 32px -18px rgba(116, 29, 254, 0.55);
+}
+@media (hover: hover) {
+  .portal-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.portal-field {
+  height: var(--portal-field-height);
+  width: 100%;
+  padding: 0 0.875rem;
+  border: 1px solid var(--portal-line);
+  border-radius: var(--portal-radius);
+  background-color: transparent;
+  font-size: 1rem;
+}
+.portal-field:focus {
+  outline: none;
+  border-color: var(--portal-primary);
+  box-shadow: 0 0 0 3px rgba(116, 29, 254, 0.15);
+}
+
+.portal-link-underline {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.portal-supricom :is(a, button):focus-visible {
+  outline: 2px solid var(--portal-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.portal-supricom {
+  --pt-paper: #faf8ff;
+  --pt-brand-deep: #4a12ac;
+  --pt-mint: #0a9a8d;
+  --pt-mint-soft: #e2f6f3;
+  --pt-ink-soft: #423c55;
+}
+
+.pt-page {
+  background-color: var(--pt-paper);
+}
+
+.pt-shell {
+  margin: 0 auto;
+  max-width: 68rem;
+  padding: 2rem 1.25rem 3.5rem;
+}
+@media (min-width: 640px) {
+  .pt-shell {
+    padding: 3rem 1.5rem 4.5rem;
+  }
+}
+
+.pt-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-manrope), Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--portal-primary);
+}
+.pt-eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.pt-display {
+  font-family: var(--font-syne), Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
+  font-size: clamp(2.35rem, 6vw, 3.9rem);
+  color: var(--portal-ink);
+  text-wrap: balance;
+}
+
+.pt-lede {
+  max-width: 44ch;
+  margin-top: 1.25rem;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--pt-ink-soft);
+}
+
+.pt-h1 {
+  margin-top: 1.5rem;
+  font-family: var(--font-syne), Arial, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+  font-size: clamp(1.7rem, 4.2vw, 2.4rem);
+  color: var(--portal-ink);
+  text-wrap: balance;
+}
+.pt-sub {
+  margin-top: 0.85rem;
+  max-width: 48ch;
+  color: var(--pt-ink-soft);
+  line-height: 1.6;
+}
+
+.pt-shell--narrow {
+  max-width: 40rem;
+}
+
+.pt-panel {
+  border-radius: 14px;
+  border: 1px solid var(--portal-line);
+  background: var(--portal-surface);
+  padding: 1.4rem;
+  box-shadow: 0 20px 44px -34px rgba(20, 18, 28, 0.35);
+}
+@media (min-width: 640px) {
+  .pt-panel {
+    padding: 1.75rem;
+  }
+}
+.pt-panel + .pt-panel {
+  margin-top: 1rem;
+}
+.pt-panel__eyebrow {
+  font-family: var(--font-manrope), Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--portal-muted);
+}
+
+.pt-label {
+  display: block;
+  font-family: var(--font-manrope), Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--portal-ink);
+}
+.pt-input,
+.pt-textarea {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 0.7rem 0.9rem;
+  border: 1.5px solid var(--portal-line-strong);
+  border-radius: 11px;
+  background: var(--portal-surface);
+  font-size: 1rem;
+  color: var(--portal-ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.pt-input {
+  height: 46px;
+}
+.pt-textarea {
+  min-height: 7rem;
+  resize: vertical;
+  line-height: 1.55;
+}
+.pt-input:focus,
+.pt-textarea:focus {
+  outline: none;
+  border-color: var(--portal-primary);
+  box-shadow: 0 0 0 4px rgba(116, 29, 254, 0.14);
+}
+
+.pt-hint {
+  margin-top: 0.4rem;
+  font-size: 0.83rem;
+  color: var(--portal-muted);
+}
+.pt-error {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: #b42318;
+}
+
+.pt-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.9rem 1.35rem;
+  border-radius: 12px;
+  background: linear-gradient(100deg, var(--portal-primary), var(--pt-brand-deep));
+  color: #fff;
+  font-family: var(--font-syne), Arial, sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  box-shadow: 0 16px 34px -20px rgba(116, 29, 254, 0.75);
+  transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease;
+}
+.pt-cta:hover {
+  box-shadow: 0 20px 40px -18px rgba(116, 29, 254, 0.85);
+}
+@media (hover: hover) {
+  .pt-cta:hover {
+    transform: translateY(-2px);
+  }
+}
+.pt-cta:disabled {
+  opacity: 0.55;
+  box-shadow: none;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.pt-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 11px;
+  border: 1px solid var(--portal-line-strong);
+  background: var(--portal-surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--portal-ink);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.pt-ghost:hover {
+  border-color: var(--portal-primary);
+  background: var(--portal-primary-soft);
+}
+
+.pt-choice {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1.5px solid var(--portal-line-strong);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+.pt-choice:hover {
+  border-color: var(--portal-primary);
+}
+.pt-choice--on {
+  border-color: var(--portal-primary);
+  background: var(--portal-primary-soft);
+  box-shadow: 0 12px 30px -20px rgba(116, 29, 254, 0.6);
+}
+
+.pt-code {
+  display: inline-block;
+  font-family: var(--font-syne), Arial, sans-serif;
+  font-weight: 800;
+  font-size: clamp(1.6rem, 4.5vw, 2.15rem);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  background: linear-gradient(120deg, var(--portal-primary), var(--pt-brand-deep));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pt-formcard {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid var(--portal-line);
+  background: var(--portal-surface);
+  box-shadow: 0 28px 56px -38px rgba(20, 18, 28, 0.4);
+}
+
+.pt-formcard__body {
+  padding: 1.5rem 1.35rem 1.7rem;
+}
+@media (min-width: 640px) {
+  .pt-formcard__body {
+    padding: 2rem 2rem 2.1rem;
+  }
+}
+
+/* El comprobante de confirmación: misma tira perforada + línea de corte que
+   usa el portal de Servicio Técnico en su .pt-ticket / .pt-stub. */
+.pt-stub {
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--portal-line);
+  background: var(--portal-surface);
+  box-shadow: 0 30px 60px -34px rgba(20, 18, 28, 0.45);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pt-stub {
+    animation: pt-print 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+@keyframes pt-print {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+.pt-stub__strip {
+  height: 1.4rem;
+  background: radial-gradient(
+        circle 3px at 15px 50%,
+        var(--portal-surface) 98%,
+        transparent 100%
+      )
+      0 0 / 30px 100% repeat-x,
+    linear-gradient(0deg, var(--portal-primary), var(--pt-brand-deep));
+}
+.pt-stub__body {
+  padding: 1.5rem 1.5rem 0.5rem;
+  text-align: center;
+}
+.pt-stub__tear {
+  margin: 0.75rem 1.5rem 0;
+  border-top: 1.5px dashed var(--portal-line-strong);
+}
+.pt-stub__foot {
+  padding: 1rem 1.5rem 1.4rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Progreso por secciones: copiado del formulario de reporte del portal
+   (pista que se llena + migas de pan, sin círculos numerados). */
+.pt-formcard__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.pt-formcard__stepno {
+  font-family: var(--font-manrope), Arial, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--portal-muted);
+  white-space: nowrap;
+}
+.pt-progress {
+  margin-top: 1.1rem;
+}
+.pt-progress__track {
+  height: 4px;
+  border-radius: 4px;
+  background: var(--portal-line);
+  overflow: hidden;
+}
+.pt-progress__fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--portal-primary), var(--pt-brand-deep));
+  transition: width 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.pt-progress__crumbs {
+  margin-top: 0.6rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: var(--font-manrope), Arial, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--portal-muted) 50%, #ffffff);
+}
+.pt-progress__crumbs .is-done {
+  color: var(--portal-muted);
+}
+.pt-progress__crumbs .is-now {
+  color: var(--portal-primary);
+  font-weight: 700;
+}
+.pt-progress__sep {
+  margin: 0 0.45rem;
+  color: color-mix(in srgb, var(--portal-muted) 45%, #ffffff);
+}
+
+/* ---------------------------------------------------------------------------
+   Piezas propias de este formulario, en el mismo lenguaje del bloque .pt-*.
+   --------------------------------------------------------------------------- */
+.pt-choice:has(input:focus-visible) {
+  outline: 2px solid var(--portal-primary);
+  outline-offset: 2px;
+}
+
+.rf-choice--invalid {
+  border-color: #d92d20;
+}
+
+/* Letra de la opción (a, b, c...) como en el documento de especificaciones. */
+.rf-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  flex-shrink: 0;
+  border-radius: 8px;
+  border: 1.5px solid var(--portal-line-strong);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--portal-muted);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.rf-letter--on {
+  border-color: var(--portal-primary);
+  background: var(--portal-primary);
+  color: #fff;
+}
+
+.rf-stub-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  background: var(--pt-mint-soft);
+  color: var(--pt-mint);
+  margin-bottom: 1rem;
+}
