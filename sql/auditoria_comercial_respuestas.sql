@@ -6,7 +6,7 @@
 CREATE TABLE IF NOT EXISTS auditoria_comercial_respuestas (
   id INT AUTO_INCREMENT PRIMARY KEY,
   razon_social VARCHAR(200) NOT NULL,
-  nombre_cargo VARCHAR(200) NOT NULL,
+  nombre_cargo VARCHAR(200) DEFAULT NULL, -- pregunta retirada del formulario
   email VARCHAR(255) DEFAULT NULL,
   ejecutivo VARCHAR(200) NOT NULL,
   p4_tiempo_respuesta VARCHAR(40) NOT NULL,

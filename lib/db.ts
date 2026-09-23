@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== "production") {
 const CREATE_TABLE = `CREATE TABLE IF NOT EXISTS auditoria_comercial_respuestas (
   id INT AUTO_INCREMENT PRIMARY KEY,
   razon_social VARCHAR(200) NOT NULL,
-  nombre_cargo VARCHAR(200) NOT NULL,
+  nombre_cargo VARCHAR(200) DEFAULT NULL,
   email VARCHAR(255) DEFAULT NULL,
   ejecutivo VARCHAR(200) NOT NULL,
   p4_tiempo_respuesta VARCHAR(40) NOT NULL,
@@ -51,6 +51,14 @@ function asegurarTabla(): Promise<void> {
   if (!tablaLista) {
     tablaLista = db
       .execute(CREATE_TABLE)
+      // La pregunta "Nombre y cargo" se quitó del formulario. En tablas creadas
+      // antes la columna era NOT NULL; se deja opcional (sin borrar datos
+      // viejos). MODIFY con la misma definición no hace nada.
+      .then(() =>
+        db.execute(
+          "ALTER TABLE auditoria_comercial_respuestas MODIFY nombre_cargo VARCHAR(200) DEFAULT NULL"
+        )
+      )
       .then(() => undefined)
       .catch((error) => {
         tablaLista = null; // reintentar en el próximo envío
@@ -62,7 +70,6 @@ function asegurarTabla(): Promise<void> {
 
 export interface NuevaRespuesta {
   razonSocial: string;
-  nombreCargo: string;
   email: string | null;
   ejecutivo: string;
   p4: string;
@@ -82,14 +89,13 @@ export async function guardarRespuesta(r: NuevaRespuesta): Promise<number> {
   await asegurarTabla();
   const [result] = await db.execute<mysql.ResultSetHeader>(
     `INSERT INTO auditoria_comercial_respuestas (
-      razon_social, nombre_cargo, email, ejecutivo,
+      razon_social, email, ejecutivo,
       p4_tiempo_respuesta, p5_precision_tecnica, p6_seguimiento, p7_observacion,
       p8_tramito_rma, p9_tiempo_resolucion, p10_claridad, p11_resolucion,
       p12_comentario, p13_mejora, ip_origen
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       r.razonSocial,
-      r.nombreCargo,
       r.email,
       r.ejecutivo,
       r.p4,

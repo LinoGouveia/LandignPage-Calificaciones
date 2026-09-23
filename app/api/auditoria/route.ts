@@ -35,8 +35,7 @@ export async function POST(request: NextRequest) {
   }
 
   const razonSocial = texto(body.razonSocial, 200);
-  const nombreCargo = texto(body.nombreCargo, 200);
-  if (!razonSocial || !nombreCargo) return error("Faltan los datos de identificación.");
+  if (!razonSocial) return error("Falta la razón social de la empresa o tienda.");
 
   const email = texto(body.email, 255);
   if (email && !EMAIL_RE.test(email)) return error("El correo electrónico no es válido.");
@@ -74,7 +73,6 @@ export async function POST(request: NextRequest) {
   try {
     await guardarRespuesta({
       razonSocial,
-      nombreCargo,
       email,
       ejecutivo: ejecutivo as string,
       p4: body.p4,

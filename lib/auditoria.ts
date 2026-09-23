@@ -70,7 +70,6 @@ export const P11_RESOLUCION: Opcion[] = [
 
 export interface RespuestaAuditoria {
   razonSocial: string;
-  nombreCargo: string;
   email: string;
   ejecutivo: string;
   p4: string;

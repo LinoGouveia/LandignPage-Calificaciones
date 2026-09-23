@@ -38,7 +38,7 @@ const MIGAS: Record<Seccion, string> = {
 };
 
 const OBLIGATORIOS: Record<Seccion, Campo[]> = {
-  1: ["razonSocial", "nombreCargo", "ejecutivo"],
+  1: ["razonSocial", "ejecutivo"],
   2: ["p4", "p5", "p6"],
   3: ["p8"],
   4: ["p9", "p10", "p11"],
@@ -49,7 +49,6 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const VACIO: RespuestaAuditoria = {
   razonSocial: "",
-  nombreCargo: "",
   email: "",
   ejecutivo: "",
   p4: "",
@@ -76,7 +75,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
   const tituloRef = useRef<HTMLHeadingElement>(null);
   const primerRender = useRef(true);
 
-  // La sección 4 solo existe si en P8 respondió que sí tramitó garantías.
+  // La sección 4 solo existe si respondió que sí tramitó garantías (campo p8).
   const visibles: Seccion[] = r.p8 === "no" ? [1, 2, 3, 5] : [1, 2, 3, 4, 5];
   const posicion = visibles.indexOf(seccion);
   const esUltima = posicion === visibles.length - 1;
@@ -220,17 +219,8 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                   aria-invalid={!!errores.razonSocial}
                 />
               </Pregunta>
-              <Pregunta n={2} id="nombreCargo" titulo="Nombre y cargo de quien responde" obligatoria error={errores.nombreCargo}>
-                <input
-                  id="nombreCargo"
-                  className="pt-input"
-                  value={r.nombreCargo}
-                  onChange={(e) => set("nombreCargo", e.target.value)}
-                  aria-invalid={!!errores.nombreCargo}
-                />
-              </Pregunta>
               <Pregunta
-                n={3}
+                n={2}
                 id="ejecutivo"
                 titulo="¿Quién es su ejecutivo de ventas asignado actualmente?"
                 obligatoria
@@ -279,7 +269,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
           {seccion === 2 && (
             <>
               <OpcionMultiple
-                n={4}
+                n={3}
                 name="p4"
                 titulo="Tiempo de respuesta en cotizaciones y consultas de inventario"
                 opciones={P4_TIEMPO_RESPUESTA}
@@ -288,7 +278,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 error={errores.p4}
               />
               <OpcionMultiple
-                n={5}
+                n={4}
                 name="p5"
                 titulo="Precisión técnica y asesoría sobre catálogo"
                 opciones={P5_PRECISION_TECNICA}
@@ -297,7 +287,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 error={errores.p5}
               />
               <OpcionMultiple
-                n={6}
+                n={5}
                 name="p6"
                 titulo="Seguimiento post-facturación y confirmación de despacho"
                 opciones={P6_SEGUIMIENTO}
@@ -305,7 +295,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 onChange={(v) => set("p6", v)}
                 error={errores.p6}
               />
-              <Pregunta n={7} id="p7" titulo="Observación puntual o aspecto a corregir" opcional>
+              <Pregunta n={6} id="p7" titulo="Observación puntual o aspecto a corregir" opcional>
                 <textarea
                   id="p7"
                   className="pt-textarea"
@@ -318,7 +308,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
 
           {seccion === 3 && (
             <OpcionMultiple
-              n={8}
+              n={7}
               name="p8"
               titulo="¿Ha tramitado garantías o ingresos a RMA en los últimos 6 meses?"
               opciones={P8_TRAMITO_RMA}
@@ -331,7 +321,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
           {seccion === 4 && (
             <>
               <OpcionMultiple
-                n={9}
+                n={8}
                 name="p9"
                 titulo="Tiempo total de diagnóstico y resolución de la garantía"
                 opciones={P9_TIEMPO_RESOLUCION}
@@ -340,7 +330,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 error={errores.p9}
               />
               <OpcionMultiple
-                n={10}
+                n={9}
                 name="p10"
                 titulo="Claridad en la comunicación y justificación técnica del caso"
                 opciones={P10_CLARIDAD}
@@ -349,7 +339,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 error={errores.p10}
               />
               <OpcionMultiple
-                n={11}
+                n={10}
                 name="p11"
                 titulo="Resolución final de los casos tramitados"
                 opciones={P11_RESOLUCION}
@@ -358,7 +348,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 error={errores.p11}
               />
               <Pregunta
-                n={12}
+                n={11}
                 id="p12"
                 titulo="Comentario o número de caso específico que requiera revisión gerencial"
                 opcional
@@ -375,7 +365,7 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
 
           {seccion === 5 && (
             <Pregunta
-              n={13}
+              n={12}
               id="p13"
               titulo="¿Qué cambio o mejora operativa en nuestros procesos comerciales o de despacho facilitaría más el trabajo diario de su tienda?"
               opcional
