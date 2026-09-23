@@ -223,7 +223,6 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                 <input
                   id="nombreCargo"
                   className="pt-input"
-                  placeholder="Ej.: Ana Gómez, Gerente de compras"
                   value={r.nombreCargo}
                   onChange={(e) => set("nombreCargo", e.target.value)}
                   aria-invalid={!!errores.nombreCargo}
