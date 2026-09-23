@@ -60,49 +60,6 @@ function asegurarTabla(): Promise<void> {
   return tablaLista;
 }
 
-export interface Vendedor {
-  /** Nombre exacto en `sellers.name`: es lo que se guarda en la respuesta. */
-  nombre: string;
-  /** Versión limpia para mostrarle al cliente. */
-  etiqueta: string;
-}
-
-// En `sellers` los nombres vienen como se cargaron en Odoo: "DIEGO  GUERRERO",
-// "Aaron Jaramillo (v)", "EMILI BRICEÑO." — se ven mal en un formulario público.
-function etiquetaVendedor(nombre: string): string {
-  return nombre
-    .replace(/\s*\(v\)\s*$/i, "")
-    .replace(/\.+$/, "")
-    .replace(/\s+/g, " ")
-    .trim()
-    .toLocaleLowerCase("es")
-    .replace(/(^|\s)\p{L}/gu, (letra) => letra.toLocaleUpperCase("es"));
-}
-
-/**
- * Nómina activa de vendedores para la pregunta P3. Sale de la tabla `sellers`
- * del dashboard (cada fila enlazada a su usuario de Odoo por `user_id`). Si la
- * base no responde se devuelve una lista vacía: el formulario sigue
- * funcionando con la opción "No estoy seguro".
- */
-export async function listarVendedoresActivos(): Promise<Vendedor[]> {
-  try {
-    const [rows] = await db.query<mysql.RowDataPacket[]>(
-      `SELECT DISTINCT TRIM(name) AS name FROM sellers
-        WHERE activo = 1 AND user_id IS NOT NULL AND TRIM(name) <> ''`
-    );
-    return rows
-      .map((r) => {
-        const nombre = String(r.name);
-        return { nombre, etiqueta: etiquetaVendedor(nombre) };
-      })
-      .sort((a, b) => a.etiqueta.localeCompare(b.etiqueta, "es"));
-  } catch (error) {
-    console.error("[db] no se pudo leer la lista de vendedores:", error);
-    return [];
-  }
-}
-
 export interface NuevaRespuesta {
   razonSocial: string;
   nombreCargo: string;

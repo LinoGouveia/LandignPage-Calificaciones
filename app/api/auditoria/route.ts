@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { guardarRespuesta, listarVendedoresActivos } from "@/lib/db";
+import { guardarRespuesta } from "@/lib/db";
+import { listarVendedoresActivos } from "@/lib/vendedores";
 import {
   NO_ESTOY_SEGURO,
   P4_TIEMPO_RESPUESTA,

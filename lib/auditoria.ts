@@ -2,8 +2,23 @@
 // Auditoría Comercial y RMA". Lo usan tanto el formulario (cliente) como el
 // API route (servidor) para validar que cada respuesta sea una opción válida.
 
-// P3: la nómina activa de ejecutivos se lee de la tabla `sellers` del
-// dashboard (ver listarVendedoresActivos en lib/db.ts).
+// P3: la nómina activa de ejecutivos se lee de Odoo (ver lib/vendedores.ts).
+export interface Vendedor {
+  /** Nombre exacto en Odoo: es lo que se guarda en la respuesta. */
+  nombre: string;
+  /** Versión limpia para mostrarle al cliente. */
+  etiqueta: string;
+  sede: string;
+}
+
+// Compañía de Odoo de cada sucursal (mismos ids del dashboard), en el orden
+// en que se muestran en la lista.
+export const SEDES: [number, string][] = [
+  [9, "Valencia"],
+  [10, "Caracas"],
+  [7, "Panamá"],
+];
+
 export const NO_ESTOY_SEGURO = "No estoy seguro";
 
 export interface Opcion {

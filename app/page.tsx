@@ -2,7 +2,7 @@ import { Clock, ShieldCheck } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { AuditoriaForm } from "@/components/auditoria-form";
-import { listarVendedoresActivos } from "@/lib/db";
+import { listarVendedoresActivos } from "@/lib/vendedores";
 
 // La nómina de vendedores se lee en cada visita: si se hiciera en el build,
 // quedaría congelada (o vacía, si la base no estaba disponible al compilar).

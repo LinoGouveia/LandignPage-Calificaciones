@@ -11,10 +11,11 @@ import {
   P6_SEGUIMIENTO,
   P8_TRAMITO_RMA,
   P9_TIEMPO_RESOLUCION,
+  SEDES,
   type Opcion,
   type RespuestaAuditoria,
+  type Vendedor,
 } from "@/lib/auditoria";
-import type { Vendedor } from "@/lib/db";
 import { cn } from "@/lib/utils";
 
 type Seccion = 1 | 2 | 3 | 4 | 5;
@@ -245,11 +246,19 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
                   <option value="" disabled>
                     Seleccione una opción
                   </option>
-                  {ejecutivos.map((v) => (
-                    <option key={v.nombre} value={v.nombre}>
-                      {v.etiqueta}
-                    </option>
-                  ))}
+                  {SEDES.map(([, sede]) => {
+                    const deLaSede = ejecutivos.filter((v) => v.sede === sede);
+                    if (deLaSede.length === 0) return null;
+                    return (
+                      <optgroup key={sede} label={sede}>
+                        {deLaSede.map((v) => (
+                          <option key={v.nombre} value={v.nombre}>
+                            {v.etiqueta}
+                          </option>
+                        ))}
+                      </optgroup>
+                    );
+                  })}
                   <option value={NO_ESTOY_SEGURO}>{NO_ESTOY_SEGURO}</option>
                 </select>
               </Pregunta>
