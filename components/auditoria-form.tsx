@@ -25,7 +25,7 @@ const TITULOS: Record<Seccion, string> = {
   1: "Identificación del cliente",
   2: "Gestión del ejecutivo de ventas",
   3: "Servicio técnico / RMA",
-  4: "Auditoría de garantías y RMA",
+  4: "Su experiencia con garantías y RMA",
   5: "Cierre y aportes operativos",
 };
 
@@ -169,7 +169,6 @@ export function AuditoriaForm({ ejecutivos }: { ejecutivos: Vendedor[] }) {
     <div ref={cardRef} className="pt-formcard mt-10 scroll-mt-6">
       <div className="pt-formcard__body">
         <div className="pt-formcard__meta">
-          <span className="pt-eyebrow">Auditoría</span>
           <span className="pt-formcard__stepno">
             Sección {posicion + 1} de {visibles.length}
           </span>

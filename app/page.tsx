@@ -30,12 +30,12 @@ export default async function Home() {
 
           <div className="pt-shell pt-shell--narrow">
             <section>
-              <span className="pt-eyebrow">Encuesta a clientes</span>
-              <h1 className="pt-h1">Auditoría de Eficiencia Operativa y Comercial</h1>
+              <span className="pt-eyebrow">Su opinión cuenta</span>
+              <h1 className="pt-h1">Queremos conocer su opinión</h1>
               <p className="pt-sub">
-                Estimado cliente: este sondeo de 2 minutos tiene como fin medir y optimizar
-                nuestros tiempos de respuesta comercial y soporte postventa para garantizar la
-                rotación fluida de su negocio.
+                Estimado cliente: queremos saber cómo ha sido su experiencia con nuestro equipo
+                de ventas y con el servicio de garantías. Son solo 2 minutos y sus respuestas
+                nos ayudan a atenderle mejor.
               </p>
 
               <div className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-semibold text-[color:var(--portal-muted)]">

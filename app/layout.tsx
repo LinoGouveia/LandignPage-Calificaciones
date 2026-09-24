@@ -17,9 +17,9 @@ const manrope = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: "Auditoría de Eficiencia Operativa y Comercial | Supricom",
+  title: "Queremos conocer su opinión | Supricom",
   description:
-    "Sondeo de 2 minutos para medir nuestros tiempos de respuesta comercial y soporte postventa (RMA).",
+    "Cuéntenos cómo ha sido su experiencia con nuestro equipo de ventas y con el servicio de garantías.",
 };
 
 export default function RootLayout({
