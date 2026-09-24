@@ -10,6 +10,7 @@ import {
   P9_TIEMPO_RESOLUCION,
   P10_CLARIDAD,
   P11_RESOLUCION,
+  SEDES,
   esOpcionValida,
   type RespuestaAuditoria,
 } from "@/lib/auditoria";
@@ -41,11 +42,11 @@ export async function POST(request: NextRequest) {
   if (email && !EMAIL_RE.test(email)) return error("El correo electrónico no es válido.");
 
   const ejecutivo = body.ejecutivo;
-  if (
-    ejecutivo !== NO_ESTOY_SEGURO &&
-    !(await listarVendedoresActivos()).some((v) => v.nombre === ejecutivo)
-  ) {
-    return error("Seleccione un ejecutivo de ventas válido.");
+  let sedeCid: number | null = null;
+  if (ejecutivo !== NO_ESTOY_SEGURO) {
+    const vendedor = (await listarVendedoresActivos()).find((v) => v.nombre === ejecutivo);
+    if (!vendedor) return error("Seleccione un ejecutivo de ventas válido.");
+    sedeCid = SEDES.find(([, nombre]) => nombre === vendedor.sede)?.[0] ?? null;
   }
 
   if (
@@ -75,6 +76,7 @@ export async function POST(request: NextRequest) {
       razonSocial,
       email,
       ejecutivo: ejecutivo as string,
+      sedeCid,
       p4: body.p4,
       p5: body.p5,
       p6: body.p6,

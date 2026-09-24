@@ -28,6 +28,7 @@ const CREATE_TABLE = `CREATE TABLE IF NOT EXISTS auditoria_comercial_respuestas 
   nombre_cargo VARCHAR(200) DEFAULT NULL,
   email VARCHAR(255) DEFAULT NULL,
   ejecutivo VARCHAR(200) NOT NULL,
+  sede_cid INT DEFAULT NULL,
   p4_tiempo_respuesta VARCHAR(40) NOT NULL,
   p5_precision_tecnica VARCHAR(40) NOT NULL,
   p6_seguimiento VARCHAR(40) NOT NULL,
@@ -42,28 +43,42 @@ const CREATE_TABLE = `CREATE TABLE IF NOT EXISTS auditoria_comercial_respuestas 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_created (created_at),
   INDEX idx_ejecutivo (ejecutivo),
+  INDEX idx_sede (sede_cid),
   INDEX idx_tramito_rma (p8_tramito_rma)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci`;
 
 let tablaLista: Promise<void> | null = null;
 
+async function crearOMigrarTabla(): Promise<void> {
+  await db.execute(CREATE_TABLE);
+
+  // La pregunta "Nombre y cargo" se quitó del formulario. En tablas creadas
+  // antes la columna era NOT NULL; se deja opcional (sin borrar datos viejos).
+  // MODIFY con la misma definición no hace nada.
+  await db.execute(
+    "ALTER TABLE auditoria_comercial_respuestas MODIFY nombre_cargo VARCHAR(200) DEFAULT NULL"
+  );
+
+  // sede_cid llegó después: la sección "Opiniones" del dashboard filtra por
+  // sede para la gerencia de ventas. MySQL no tiene ADD COLUMN IF NOT EXISTS.
+  const [cols] = await db.query<mysql.RowDataPacket[]>(
+    `SELECT COLUMN_NAME FROM information_schema.COLUMNS
+      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'auditoria_comercial_respuestas'
+        AND COLUMN_NAME = 'sede_cid'`
+  );
+  if (cols.length === 0) {
+    await db.execute(
+      "ALTER TABLE auditoria_comercial_respuestas ADD COLUMN sede_cid INT DEFAULT NULL AFTER ejecutivo, ADD INDEX idx_sede (sede_cid)"
+    );
+  }
+}
+
 function asegurarTabla(): Promise<void> {
   if (!tablaLista) {
-    tablaLista = db
-      .execute(CREATE_TABLE)
-      // La pregunta "Nombre y cargo" se quitó del formulario. En tablas creadas
-      // antes la columna era NOT NULL; se deja opcional (sin borrar datos
-      // viejos). MODIFY con la misma definición no hace nada.
-      .then(() =>
-        db.execute(
-          "ALTER TABLE auditoria_comercial_respuestas MODIFY nombre_cargo VARCHAR(200) DEFAULT NULL"
-        )
-      )
-      .then(() => undefined)
-      .catch((error) => {
-        tablaLista = null; // reintentar en el próximo envío
-        throw error;
-      });
+    tablaLista = crearOMigrarTabla().catch((error) => {
+      tablaLista = null; // reintentar en el próximo envío
+      throw error;
+    });
   }
   return tablaLista;
 }
@@ -72,6 +87,8 @@ export interface NuevaRespuesta {
   razonSocial: string;
   email: string | null;
   ejecutivo: string;
+  /** Compañía de Odoo de la sede del ejecutivo (9, 10, 7); null si "No estoy seguro". */
+  sedeCid: number | null;
   p4: string;
   p5: string;
   p6: string;
@@ -89,15 +106,16 @@ export async function guardarRespuesta(r: NuevaRespuesta): Promise<number> {
   await asegurarTabla();
   const [result] = await db.execute<mysql.ResultSetHeader>(
     `INSERT INTO auditoria_comercial_respuestas (
-      razon_social, email, ejecutivo,
+      razon_social, email, ejecutivo, sede_cid,
       p4_tiempo_respuesta, p5_precision_tecnica, p6_seguimiento, p7_observacion,
       p8_tramito_rma, p9_tiempo_resolucion, p10_claridad, p11_resolucion,
       p12_comentario, p13_mejora, ip_origen
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       r.razonSocial,
       r.email,
       r.ejecutivo,
+      r.sedeCid,
       r.p4,
       r.p5,
       r.p6,

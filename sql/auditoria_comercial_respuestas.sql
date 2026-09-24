@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS auditoria_comercial_respuestas (
   nombre_cargo VARCHAR(200) DEFAULT NULL, -- pregunta retirada del formulario
   email VARCHAR(255) DEFAULT NULL,
   ejecutivo VARCHAR(200) NOT NULL,
+  sede_cid INT DEFAULT NULL, -- compañía de Odoo de la sede del ejecutivo (9, 10, 7)
   p4_tiempo_respuesta VARCHAR(40) NOT NULL,
   p5_precision_tecnica VARCHAR(40) NOT NULL,
   p6_seguimiento VARCHAR(40) NOT NULL,
@@ -23,5 +24,6 @@ CREATE TABLE IF NOT EXISTS auditoria_comercial_respuestas (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_created (created_at),
   INDEX idx_ejecutivo (ejecutivo),
+  INDEX idx_sede (sede_cid),
   INDEX idx_tramito_rma (p8_tramito_rma)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
